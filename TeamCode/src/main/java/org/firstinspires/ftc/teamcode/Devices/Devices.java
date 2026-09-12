@@ -40,7 +40,7 @@ public class Devices {
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        intake.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -105,8 +105,8 @@ public class Devices {
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
 
-        double newY = cos + sin;
-        double newX = -sin + cos;
+        double newY = x*cos + y*(-sin);
+        double newX = x*(sin) + y*cos;
 
         drive(newX, newY, r);
 
