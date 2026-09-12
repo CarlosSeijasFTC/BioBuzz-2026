@@ -105,8 +105,8 @@ public class Devices {
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
 
-        double newY = x*cos + y*(-sin);
-        double newX = x*(sin) + y*cos;
+        double newY = y*cos + x*(-sin);
+        double newX = y*(sin) + x*cos;
 
         drive(newX, newY, r);
 
