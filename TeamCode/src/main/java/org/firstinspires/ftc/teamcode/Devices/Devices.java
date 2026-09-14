@@ -31,9 +31,9 @@ public class Devices {
         backLeft = hwmp.get(DcMotor.class, "bL");
         intake = hwmp.get(DcMotor.class, "intake");
 
-        imu = hwmp.get(IMU.class, "imu");
+        imu = hwmp.get(IMU.class, "imu2");
 
-        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.UP);
+        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD, RevHubOrientationOnRobot.UsbFacingDirection.LEFT);
         imu.initialize(new IMU.Parameters(orientation));
         imu.resetYaw();
 
