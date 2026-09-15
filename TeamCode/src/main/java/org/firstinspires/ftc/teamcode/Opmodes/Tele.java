@@ -20,7 +20,7 @@ public class Tele extends OpMode {
 
     @Override
     public void loop() {
-        hw.driveField(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+        hw.driveField(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
         if(gamepad2.a && !wasA2){
             intake ++;
