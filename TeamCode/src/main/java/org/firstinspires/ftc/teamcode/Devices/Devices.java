@@ -17,6 +17,7 @@ public class Devices {
     private DcMotor frontLeft;
     private DcMotor backLeft;
     private DcMotor intake;
+    private DcMotor normal;
 
     public IMU imu;
 
@@ -30,6 +31,7 @@ public class Devices {
         frontLeft = hwmp.get(DcMotor.class, "fL");
         backLeft = hwmp.get(DcMotor.class, "bL");
         intake = hwmp.get(DcMotor.class, "intake");
+        intake = hwmp.get(DcMotor.class, "normal");
 
         imu = hwmp.get(IMU.class, "imu2");
 
@@ -40,6 +42,7 @@ public class Devices {
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        normal.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -63,6 +66,15 @@ public class Devices {
 
     public void setBackLeft(double a){
         backLeft.setPower(a);
+    }
+    public double getRightEncTicks(){
+        return frontRight.getCurrentPosition();
+    }
+    public double getLeftEncTicks(){
+        return intake.getCurrentPosition();
+    }
+    public double getNormalEncTicks(){
+        return normal.getCurrentPosition();
     }
 
     public void intake(int a){
@@ -111,6 +123,7 @@ public class Devices {
         drive(newX, newY, r);
 
     }
+
 
 
 }
