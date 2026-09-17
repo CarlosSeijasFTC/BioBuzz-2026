@@ -31,7 +31,7 @@ public class Devices {
         frontLeft = hwmp.get(DcMotor.class, "fL");
         backLeft = hwmp.get(DcMotor.class, "bL");
         intake = hwmp.get(DcMotor.class, "intake");
-        intake = hwmp.get(DcMotor.class, "normal");
+        normal = hwmp.get(DcMotor.class, "normal");
 
         imu = hwmp.get(IMU.class, "imu2");
 
@@ -50,6 +50,10 @@ public class Devices {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        normal.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void setFrontRight(double a){
