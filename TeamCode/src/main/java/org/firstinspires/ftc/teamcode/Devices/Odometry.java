@@ -107,7 +107,8 @@ public class Odometry {
 
     @Override
     public String toString(){
-        return Position.toString();
+
+        return "x: " + x + "\ny: " + y + "\nθ: " + theta;
     }
 
 
