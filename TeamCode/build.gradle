@@ -19,12 +19,23 @@ apply from: '../build.dependencies.gradle'
 android {
     namespace = 'org.firstinspires.ftc.teamcode'
 
+
+    defaultConfig {
+        minSdk 24
+    }
+
     packagingOptions {
+        jniLibs {
+            pickFirsts += ['**/*.so']
+        }
         jniLibs.useLegacyPackaging true
     }
 }
 
 dependencies {
     implementation project(':FtcRobotController')
+    implementation files('libs\\JBezier.jar')
     implementation 'org.ejml:ejml-simple:0.46.1'
+    implementation "com.bylazar:docs:1.0.5"
+    implementation "com.bylazar:fullpanels:1.0.13"
 }

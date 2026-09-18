@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode.Opmodes;
 
+import com.bylazar.field.PanelsField;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Devices.Devices;
 import org.firstinspires.ftc.teamcode.Devices.Odometry;
+
+import java.util.List;
 
 @TeleOp
 public class Tele extends OpMode {
@@ -18,18 +22,35 @@ public class Tele extends OpMode {
 
     Odometry odo = new Odometry();
 
+   List<LynxModule> hubs;
+
     Devices hw = new Devices();
+
+
     @Override
     public void init() {
         hw.init(hardwareMap);
+        hubs = hardwareMap.getAll(LynxModule.class);
+
+        for(LynxModule hub : hubs){
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        }
+        for(LynxModule hub : hubs){
+            hub.clearBulkCache();
+        }
     }
 
     @Override
     public void loop() {
+        for(LynxModule hub : hubs){
+            hub.clearBulkCache();
+        }
+
         hw.driveField(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
        odo.update(hw.getRightEncTicks(), hw.getLeftEncTicks(), hw.getNormalEncTicks(), hw.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
 
         telemetry.addLine(odo.toString());
+
 
         telemetry.addData("rightEnc", hw.getRightEncTicks());
         telemetry.addData("leftEnc", hw.getLeftEncTicks());
