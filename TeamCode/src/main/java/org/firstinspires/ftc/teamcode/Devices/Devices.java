@@ -1,0 +1,133 @@
+package org.firstinspires.ftc.teamcode.Devices;
+
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.opencv.core.Mat;
+
+public class Devices {
+
+    private DcMotor frontRight;
+    private DcMotor backRight;
+    private DcMotor frontLeft;
+    private DcMotor backLeft;
+    private DcMotor intake;
+    private DcMotor normal;
+
+    public IMU imu;
+
+    private double maxPower = 1;
+
+    private final double MAX_SPEED = 1; //change for outreach
+
+    public void init(HardwareMap hwmp){
+        frontRight = hwmp.get(DcMotor.class, "fR");
+        backRight = hwmp.get(DcMotor.class, "bR");
+        frontLeft = hwmp.get(DcMotor.class, "fL");
+        backLeft = hwmp.get(DcMotor.class, "bL");
+        intake = hwmp.get(DcMotor.class, "intake");
+        normal = hwmp.get(DcMotor.class, "normal");
+
+        imu = hwmp.get(IMU.class, "imu2");
+
+        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD, RevHubOrientationOnRobot.UsbFacingDirection.LEFT);
+        imu.initialize(new IMU.Parameters(orientation));
+        imu.resetYaw();
+
+
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        normal.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        normal.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void setFrontRight(double a){
+        frontRight.setPower(a);
+    }
+
+    public void setBackRight(double a){
+        backRight.setPower(a);
+    }
+
+    public void setFrontLeft(double a){
+        frontLeft.setPower(a);
+    }
+
+    public void setBackLeft(double a){
+        backLeft.setPower(a);
+    }
+    public double getRightEncTicks(){
+        return frontRight.getCurrentPosition();
+    }
+    public double getLeftEncTicks(){
+        return intake.getCurrentPosition();
+    }
+    public double getNormalEncTicks(){
+        return normal.getCurrentPosition();
+    }
+
+    public void intake(int a){
+        if((a % 2) == 0){
+            intake.setPower(0);
+        }
+        else {
+            intake.setPower(1);
+        }
+    }
+
+    //driving
+    public void drive(double x, double y, double r){
+
+        y = y * 1.1;
+
+        maxPower = 1;
+
+        double fL = x + y + r;
+        double fR = x - y - r;
+        double bL = x - y + r;
+        double bR = x + y - r;
+
+        maxPower = Math.max(fL, maxPower);
+        maxPower = Math.max(fR, maxPower);
+        maxPower = Math.max(bL, maxPower);
+        maxPower = Math.max(bR, maxPower);
+
+        frontRight.setPower((fR/maxPower)*MAX_SPEED);
+        frontLeft.setPower((fL/maxPower)*MAX_SPEED);
+        backRight.setPower((bR/maxPower)*MAX_SPEED);
+        backLeft.setPower((bL/maxPower)*MAX_SPEED);
+
+    }
+
+    public void driveField(double x, double y, double r){
+        double angle = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        angle = AngleUnit.normalizeRadians(angle);
+
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+
+        double newY = y*cos + x*(-sin);
+        double newX = y*(sin) + x*cos;
+
+        drive(newX, newY, r);
+
+    }
+
+
+
+}
