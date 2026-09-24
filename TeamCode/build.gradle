@@ -26,8 +26,9 @@ android {
 
 dependencies {
     implementation project(':FtcRobotController')
-    implementation fileTree(dir: 'libs/commons-math-4.0-beta1', include: ['*.jar'], exclude: ['*-javadoc.jar', '*-sources.jar'])
+   // implementation fileTree(dir: 'libs/commons-math-4.0-beta1', include: ['*.jar'], exclude: ['*-javadoc.jar', '*-sources.jar'])
     implementation 'org.ejml:ejml-simple:0.46.1'
     implementation 'com.bylazar:docs:1.0.5'
     implementation 'com.bylazar:fullpanels:1.0.13'
+    implementation "com.bylazar:field:1.0.7"
 }

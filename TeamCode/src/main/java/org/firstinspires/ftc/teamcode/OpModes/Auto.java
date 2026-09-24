@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Opmodes;
+package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -24,7 +24,7 @@ public class Auto extends OpMode {
     };
 
     double[][] finalPose = {
-            {2,1},
+            {150,100},
             {0,0},
             {0,0}
     };
@@ -47,6 +47,11 @@ public class Auto extends OpMode {
         if(time.milliseconds() > 2000 && time.milliseconds() < 5000){
             hw.driveField(navigation.calculateGuidanceVector(movement,odo.get2DPose()).getX(), navigation.calculateGuidanceVector(movement,odo.get2DPose()).getY(), 0);
             odo.update(hw.getRightEncTicks(), hw.getLeftEncTicks(), hw.getNormalEncTicks(), hw.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+            telemetry.addLine(odo.toString());
         }
+        else {
+            hw.driveField(0,0,0);
+        }
+        telemetry.addData("Direction", navigation.calculateGuidanceVector(movement,odo.get2DPose()).toString());
     }
 }

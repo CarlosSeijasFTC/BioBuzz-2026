@@ -7,9 +7,9 @@ public class GVFNavigation {
         Vector2 closestPoint = spline.tParametricQuinticSpline(closestT);
         Vector2 curveDerivative = spline.tDerivativeValue(closestT);
         Vector2 robotToClosestPoint = closestPoint.subtract(location);
-        double CORRECTION_DISTANCE = 5;
+        double CORRECTION_DISTANCE = 50;
         Vector2 endPoint = spline.tParametricQuinticSpline(1);
-        double SAVING_THROW_DISTANCE = 10;
+        double SAVING_THROW_DISTANCE = 50;
         double directPursuitThreshold = 1;
         {
             for(double i = 1; i>=0; i -= 1/200.0){
@@ -30,11 +30,12 @@ public class GVFNavigation {
         Vector2 movementVector = new Vector2(Math.cos(movementDirection), Math.sin(movementDirection));
         double speed = 1;
 
-        if(robotToEnd.getMag() <50){
-            speed = lerp(0.2, speed, robotToEnd.getMag()/50);
+        if(robotToEnd.getMag() <100){
+            speed = lerp(0.2, speed, robotToEnd.getMag()/100);
         }
 
         movementVector = movementVector.scalarMultiply(speed);
+        movementVector = movementVector.normalize();
 
         return movementVector;
     }

@@ -45,4 +45,9 @@ public class Vector2 {
     public double[] toArray(){
         return new double[]{x,y};
     }
+
+    @Override
+    public String toString(){
+        return "x: " + x + "\ny: " + y;
+    }
 }

@@ -44,6 +44,10 @@ public class Devices {
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         normal.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        normal.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

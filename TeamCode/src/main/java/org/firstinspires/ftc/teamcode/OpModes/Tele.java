@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Opmodes;
+package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.bylazar.field.PanelsField;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -45,8 +45,10 @@ public class Tele extends OpMode {
         for(LynxModule hub : hubs){
             hub.clearBulkCache();
         }
-
-        hw.driveField(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        if(gamepad1.right_bumper){
+            hw.drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        }
+        else hw.driveField(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
        odo.update(hw.getRightEncTicks(), hw.getLeftEncTicks(), hw.getNormalEncTicks(), hw.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
 
         telemetry.addLine(odo.toString());

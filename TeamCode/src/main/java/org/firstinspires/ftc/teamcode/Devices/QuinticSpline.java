@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Devices;
 
-import org.apache.commons.math4.legacy.analysis.polynomials.PolynomialFunction;
 import org.ejml.simple.SimpleMatrix;
 
 public class QuinticSpline {
@@ -28,8 +27,8 @@ public class QuinticSpline {
     public SimpleMatrix resultYCoefficients;
     public PolynomialFunction xSplineComponent;
     public PolynomialFunction ySplineComponent;
-    public double[] derivativeXCoefficients = new double[5];
-    public double[] derivativeYCoefficients = new double[5];
+    public double[] derivativeXCoefficients = new double[6];
+    public double[] derivativeYCoefficients = new double[6];
     private PolynomialFunction xDerivative;
     private PolynomialFunction yDerivative;
 
@@ -60,15 +59,17 @@ public class QuinticSpline {
         }
         xMatrix = new SimpleMatrix(xArray);
         yMatrix = new SimpleMatrix(yArray);
-        resultXCoefficients = constantMatrix.solve(xMatrix);
-        resultYCoefficients = constantMatrix.solve(yMatrix);
+        resultXCoefficients = constantMatrix.invert().mult(xMatrix);
+        resultYCoefficients = constantMatrix.invert().mult(yMatrix);
         xSplineComponent = new PolynomialFunction(columnVectorToPolynomialArray(resultXCoefficients));
         ySplineComponent = new PolynomialFunction(columnVectorToPolynomialArray(resultYCoefficients));
         for(int i = 0; i<=4; i++){
-            derivativeXCoefficients[i] = resultXCoefficients.get(5-i,1) * i;
+            derivativeXCoefficients[i] = resultXCoefficients.get(4-i,0) * (i+1);
+            derivativeXCoefficients[5] = 0;
         }
         for(int i = 0; i<=4; i++){
-            derivativeYCoefficients[i] = resultYCoefficients.get(5-i,1) * i;
+            derivativeYCoefficients[i] = resultYCoefficients.get(4-i,0) * (i+1);
+            derivativeXCoefficients[5] = 0;
         }
         xDerivative = new PolynomialFunction(derivativeXCoefficients);
         yDerivative = new PolynomialFunction(derivativeYCoefficients);
@@ -77,7 +78,7 @@ public class QuinticSpline {
     protected double[] columnVectorToPolynomialArray(SimpleMatrix matrix){
         double[] result = new double[6];
         for(int i = 0; i<=5; i++){
-            result[i] = matrix.get(6-i,1);
+            result[i] = matrix.get(5-i,0);
         }
         return result;
     }
