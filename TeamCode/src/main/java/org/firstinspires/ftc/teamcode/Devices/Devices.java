@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Devices;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -18,6 +19,7 @@ public class Devices {
     private DcMotor backLeft;
     private DcMotor intake;
     private DcMotor normal;
+    private DcMotor outtake;
 
     public IMU imu;
 
@@ -32,6 +34,7 @@ public class Devices {
         backLeft = hwmp.get(DcMotor.class, "bL");
         intake = hwmp.get(DcMotor.class, "intake");
         normal = hwmp.get(DcMotor.class, "normal");
+        outtake = hwmp.get(DcMotor.class, "outtake");
 
         imu = hwmp.get(IMU.class, "imu2");
 
@@ -53,7 +56,8 @@ public class Devices {
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -81,16 +85,32 @@ public class Devices {
     public double getLeftEncTicks(){
         return intake.getCurrentPosition();
     }
+
     public double getNormalEncTicks(){
         return normal.getCurrentPosition();
     }
 
     public void intake(int a){
-        if((a % 2) == 0){
+        if((a % 4) == 0){
             intake.setPower(0);
         }
+        else if(a % 4 == 1){
+            intake.setPower(0.4);
+        }
+        else if(a%4 == 2){
+            intake.setPower(0.43);
+        }
+        else if(a%4 == 3){
+            intake.setPower(0.5    );
+        }
+    }
+
+    public void outtake(int a){
+        if((a % 2) == 0){
+            outtake.setPower(0);
+        }
         else {
-            intake.setPower(1);
+            outtake.setPower(0.8);
         }
     }
 
@@ -130,6 +150,14 @@ public class Devices {
 
         drive(newX, newY, r);
 
+    }
+
+    public String motorStatus(){
+        return "\n Fl: " + frontLeft.getPower() + "\n Fr: " + frontRight.getPower() + "\n Bl: " + backLeft.getPower() + "\n Br: " + backRight.getPower();
+    }
+
+    public String controller1Status(Gamepad gamepad){
+        return "\n Left Stick X: " + gamepad.left_stick_x + "\n Left Stick Y: " + -gamepad.left_stick_y + "\n Right Stick X" + gamepad.right_stick_x;
     }
 
 

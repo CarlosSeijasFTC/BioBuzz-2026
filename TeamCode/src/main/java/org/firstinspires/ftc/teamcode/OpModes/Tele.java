@@ -17,8 +17,10 @@ public class Tele extends OpMode {
     boolean wasA2;
     boolean wasRS1;
     boolean wasLS1;
+    boolean wasRB2;
 
     int intake;
+    int outtake;
 
     Odometry odo = new Odometry();
 
@@ -57,6 +59,7 @@ public class Tele extends OpMode {
         telemetry.addData("rightEnc", hw.getRightEncTicks());
         telemetry.addData("leftEnc", hw.getLeftEncTicks());
         telemetry.addData("normalEnc", hw.getNormalEncTicks());
+        telemetry.addData("Intake Stage", intake % 4);
 
         if(gamepad2.a && !wasA2){
             intake ++;
@@ -67,12 +70,17 @@ public class Tele extends OpMode {
         if (gamepad1.left_stick_button && !wasLS1){
             odo.resetOdometry();
         }
+        if(gamepad2.right_bumper && !wasRB2){
+            outtake ++;
+        }
 
 
         hw.intake(intake);
+        hw.outtake(outtake);
 
         wasA2 = gamepad2.a;
         wasRS1 = gamepad1.right_stick_button;
         wasLS1 = gamepad1.left_stick_button;
+        wasRB2 = gamepad2.right_bumper;
     }
 }
