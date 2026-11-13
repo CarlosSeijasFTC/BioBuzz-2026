@@ -90,4 +90,17 @@ public class AutoLeft extends LinearOpMode {
         telemetry.clearAll();
         telemetry.update();
     }
+    public void shoot(double time){
+        telemetry.addData("Shooting", "\nTime: " + time);
+        telemetry.update();
+        hw.outtake(1);
+        sleep(750);
+        hw.servo(1);
+        sleep((long) time);
+        hw.outtake(0);
+        hw.servo(0);
+        sleep(500);
+        telemetry.clearAll();
+        telemetry.update();
+    }
 }

@@ -115,7 +115,7 @@ public class Devices {
             outtake.setPower(0);
         }
         else {
-            outtake.setPower(0.68);
+            outtake.setPower(0.5);
         }
     }
 
@@ -124,7 +124,7 @@ public class Devices {
             servo.setPosition(0);
         }
         if(a%2 == 1){
-            servo.setPosition(0.15);
+            servo.setPosition(0.06);
         }
     }
 
