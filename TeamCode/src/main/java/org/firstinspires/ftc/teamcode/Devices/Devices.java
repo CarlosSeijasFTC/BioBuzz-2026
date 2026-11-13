@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -20,12 +21,13 @@ public class Devices {
     private DcMotor intake;
     private DcMotor normal;
     private DcMotor outtake;
+    private Servo servo;
 
     public IMU imu;
 
     private double maxPower = 1;
 
-    private final double MAX_SPEED = 1; //change for outreach
+    private final double MAX_SPEED = 0.7; //change for outreach
 
     public void init(HardwareMap hwmp){
         frontRight = hwmp.get(DcMotor.class, "fR");
@@ -36,9 +38,12 @@ public class Devices {
         normal = hwmp.get(DcMotor.class, "normal");
         outtake = hwmp.get(DcMotor.class, "outtake");
 
+        servo = hwmp.get(Servo.class, "servo");
+        servo.setPosition(0);
+
         imu = hwmp.get(IMU.class, "imu2");
 
-        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD, RevHubOrientationOnRobot.UsbFacingDirection.LEFT);
+        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.FORWARD, RevHubOrientationOnRobot.UsbFacingDirection.RIGHT);
         imu.initialize(new IMU.Parameters(orientation));
         imu.resetYaw();
 
@@ -101,7 +106,7 @@ public class Devices {
             intake.setPower(0.43);
         }
         else if(a%4 == 3){
-            intake.setPower(0.5    );
+            intake.setPower(0.5);
         }
     }
 
@@ -110,7 +115,16 @@ public class Devices {
             outtake.setPower(0);
         }
         else {
-            outtake.setPower(0.8);
+            outtake.setPower(0.68);
+        }
+    }
+
+    public void servo(int a){
+        if (a %2 == 0){
+            servo.setPosition(0);
+        }
+        if(a%2 == 1){
+            servo.setPosition(0.15);
         }
     }
 

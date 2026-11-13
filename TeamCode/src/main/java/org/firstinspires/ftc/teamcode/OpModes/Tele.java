@@ -18,9 +18,11 @@ public class Tele extends OpMode {
     boolean wasRS1;
     boolean wasLS1;
     boolean wasRB2;
+    boolean wasB2;
 
     int intake;
     int outtake;
+    int servo;
 
     Odometry odo = new Odometry();
 
@@ -73,14 +75,19 @@ public class Tele extends OpMode {
         if(gamepad2.right_bumper && !wasRB2){
             outtake ++;
         }
+        if(gamepad2.b && !wasB2){
+            servo++;
+        }
 
 
         hw.intake(intake);
         hw.outtake(outtake);
+        hw.servo(servo);
 
         wasA2 = gamepad2.a;
         wasRS1 = gamepad1.right_stick_button;
         wasLS1 = gamepad1.left_stick_button;
         wasRB2 = gamepad2.right_bumper;
+        wasB2 = gamepad2.b;
     }
 }
